@@ -3,3 +3,7 @@
 .idea/tdd.iml
 .idea/workspace.xml
 .idea/inspectionProfiles/profiles_settings.xml
+superlists/superlists/__pycache__/__init__.cpython-34.pyc
+superlists/superlists/__pycache__/settings.cpython-34.pyc
+superlists/superlists/__pycache__/urls.cpython-34.pyc
+superlists/superlists/__pycache__/wsgi.cpython-34.pyc
