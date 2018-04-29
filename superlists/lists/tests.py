@@ -3,8 +3,8 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.test import TestCase
 
-from .models import Item
-from .views import home_page
+from lists.models import Item
+from lists.views import home_page
 
 
 class HomePageTest(TestCase):
