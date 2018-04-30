@@ -1,4 +1,4 @@
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, reverse
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 from django.test import TestCase
@@ -18,34 +18,6 @@ class HomePageTest(TestCase):
         response = home_page(request)
         expect_html = render_to_string('home.html')
         self.assertEqual(response.content.decode(), expect_html)
-
-    def test_home_page_can_save_a_POST_request(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        new_item_text = '신규 작업 아이템'
-        request.POST['item_text'] = new_item_text
-
-        response = home_page(request)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the_only_list_in_the_world/')
-
-    def test_home_page_redirects_after_POST(self):
-        request = HttpRequest()
-        request.method = 'POST'
-        new_item_text = '신규 작업 아이템'
-        request.POST['item_text'] = new_item_text
-
-        response = home_page(request)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the_only_list_in_the_world/')
-
-    def test_home_page_only_saves_items_when_POST(self):
-        request = HttpRequest()
-        home_page(request)
-
-        self.assertEqual(Item.objects.count(), 0)
 
 
 class ItemModelTest(TestCase):
@@ -72,3 +44,19 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, 'itemey 1')
         self.assertContains(response, 'itemey 2')
+
+    def test_saving_a_POST_request(self):
+        self.client.post(
+            '/lists/new',
+            data={'item_text': '신규 작업 아이템'}
+        )
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, '신규 작업 아이템')
+
+    def test_redirects_after_POST(self):
+        response = self.client.post(
+            '/lists/new',
+            data={'item_text': '신규 작업 아이템'}
+        )
+        self.assertRedirects(response, reverse('view_list'))
