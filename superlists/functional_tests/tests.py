@@ -1,18 +1,18 @@
 import os
-import unittest
 
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTestCase(unittest.TestCase):
+class NewVisitorTestCase(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome(
             os.path.join(
                 os.path.dirname(
                     os.path.abspath(__file__)),
-                'chromedriver')
+                '../chromedriver')
         )
         self.browser.implicitly_wait(3)
 
@@ -26,7 +26,7 @@ class NewVisitorTestCase(unittest.TestCase):
 
     def test_can_start_a_list_adn_retrieve_it_later(self):
         # 웹사이트 확인
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # 웹페이지 타이틀에 'To-do' 있는지 확인
         self.assertIn('To-Do', self.browser.title)
