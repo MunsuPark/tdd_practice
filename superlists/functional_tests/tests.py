@@ -34,7 +34,7 @@ class NewVisitorTestCase(LiveServerTestCase):
         # 웹페이지 타이틀에 'To-do' 있는지 확인
         self.assertIn('To-Do', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('To-Do', header_text)
+        self.assertIn('작업 목록 시작', header_text)
 
         # 작업 추가하기
         inputbox = self.browser.find_element_by_id('id_new_item')
